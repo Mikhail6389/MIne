@@ -1,0 +1,29 @@
+import telebot
+
+# Укажите токен вашего бота
+
+
+# Создание объекта бота
+bot = telebot.TeleBot(token)
+
+# Обработчик команды /start
+@bot.message_handler(commands=['start'])
+def handle_start(message):
+    bot.send_message(message.chat.id, "Привет! Я бот. Чем могу помочь?")
+
+# Обработчик всех текстовых сообщений
+@bot.message_handler(func=lambda message: True)
+def handle_text(message):
+    bot.send_message(message.chat.id, "Вы написали: " + message.text)
+    
+
+@bot.message_handler(commands=['Петух!'])
+def get_chat_id(message):
+    chat_member = bot.get_chat_member(message.chat.id, message.from_user.id)
+    user_chat_id = chat_member.user.id
+    bot.send_message(message.chat.id, f"Chat ID пользователя {message.from_user.username}: {user_chat_id}")
+
+    
+    
+# Запуск бота
+bot.polling()
